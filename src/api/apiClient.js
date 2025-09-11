@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://mahannarani18.pythonanywhere.com/api', // آدرس پایه API
+  // کد اصلاح شده: آدرس پایه API از متغیر محیطی خوانده می‌شود
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 // این بخش قبل از هر درخواست اجرا می‌شود
