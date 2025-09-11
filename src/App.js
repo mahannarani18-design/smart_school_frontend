@@ -1,4 +1,3 @@
-// File Path: frontend/src/App.js
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -19,6 +18,7 @@ import TaskListPage from './pages/TaskListPage';
 import TaskCreatePage from './pages/TaskCreatePage';
 import TaskEditPage from './pages/TaskEditPage';
 import SurveyListPage from './pages/SurveyListPage';
+import SurveyDetailPage from './pages/SurveyDetailPage';
 import TestResultListPage from './pages/TestResultListPage';
 import QuestionBankPage from './pages/QuestionBankPage';
 import QuestionCreatePage from './pages/QuestionCreatePage';
@@ -39,7 +39,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-
+        
         <Route path="/" element={<PrivateRoute><MainLayout /></PrivateRoute>}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="students" element={<StudentListPage />} />
@@ -58,6 +58,7 @@ function App() {
           <Route path="tasks/new" element={<TaskCreatePage />} />
           <Route path="tasks/:id/edit" element={<TaskEditPage />} />
           <Route path="surveys" element={<SurveyListPage />} />
+          <Route path="surveys/:id" element={<SurveyDetailPage />} />
           <Route path="results" element={<TestResultListPage />} />
           <Route path="question-bank" element={<QuestionBankPage />} />
           <Route path="question-bank/new" element={<QuestionCreatePage />} />
@@ -71,4 +72,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;

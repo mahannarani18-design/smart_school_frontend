@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8000/api', // آدرس پایه API
+  baseURL: 'https://mahannarani18.pythonanywhere.com/api', // آدرس پایه API
 });
 
 // این بخش قبل از هر درخواست اجرا می‌شود
