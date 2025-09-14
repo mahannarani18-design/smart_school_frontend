@@ -1,32 +1,33 @@
-// مسیر: frontend/src/pages/LoginPage.js
+// frontend/src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { Container, Box, Typography, TextField, Button, Avatar } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/apiClient';
-import { useNotification } from '../context/NotificationContext'; // <-- هوک نوتیفیکیشن را وارد کنید
+import { useNotification } from '../context/NotificationContext';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { showNotification } = useNotification(); // <-- از هوک استفاده کنید
+  const { showNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await apiClient.post('/token/', {
+      // مسیر درست: /api/token/
+      const response = await apiClient.post('/api/token/', {
         username: username,
         password: password,
       });
 
+      // ذخیره توکن در localStorage
       localStorage.setItem('authToken', response.data.token);
-      showNotification('ورود با موفقیت انجام شد!'); // <-- استفاده از نوتیفیکیشن موفقیت
-      navigate('/dashboard');
 
+      showNotification('ورود با موفقیت انجام شد!');
+      navigate('/dashboard');
     } catch (err) {
       console.error('Login failed:', err);
-      // استفاده از نوتیفیکیشن خطا
       showNotification('نام کاربری یا رمز عبور اشتباه است.', 'error');
     }
   };
@@ -47,7 +48,6 @@ function LoginPage() {
         <Typography component="h1" variant="h5">
           ورود به پنل مدیریت
         </Typography>
-        {/* دیگر به نمایش خطای دستی در فرم نیازی نداریم */}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -73,12 +73,7 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             ورود
           </Button>
         </Box>
