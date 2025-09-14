@@ -12,7 +12,7 @@
     "@mui/material": "^5.14.12",
     "@mui/x-data-grid": "^6.16.2",
     "@mui/x-date-pickers": "^6.16.2",
-    "axios": "^1.5.1",
+    "axios": "^1.9.0",
     "chart.js": "^4.4.0",
     "dayjs": "^1.11.10",
     "electron-is-dev": "^2.0.0",
@@ -26,6 +26,15 @@
     "stylis": "^4.3.0",
     "stylis-plugin-rtl": "^2.1.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "electron": "^26.3.0",
+    "electron-builder": "^24.6.4",
+    "wait-on": "^7.0.1"
+  },
+  "overrides": {
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,11 +61,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.1",
-    "electron": "^26.3.0",
-    "electron-builder": "^24.6.4",
-    "wait-on": "^7.0.1"
   }
 }
