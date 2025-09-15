@@ -15,14 +15,15 @@ function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // ✅ تغییر اصلی اینجا اعمال شد
+      // ارسال درخواست لاگین به SimpleJWT
       const response = await apiClient.post('/token/', {
         username: username,
         password: password,
       });
 
-      // ذخیره توکن در localStorage
-      localStorage.setItem('authToken', response.data.token);
+      // ذخیره توکن‌ها در localStorage
+      localStorage.setItem('authToken', response.data.access);
+      localStorage.setItem('refreshToken', response.data.refresh);
 
       showNotification('ورود با موفقیت انجام شد!');
       navigate('/dashboard');
