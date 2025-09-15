@@ -15,8 +15,8 @@ function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // مسیر درست: /api/token/
-      const response = await apiClient.post('/api/token/', {
+      // ✅ تغییر اصلی اینجا اعمال شد
+      const response = await apiClient.post('/token/', {
         username: username,
         password: password,
       });
