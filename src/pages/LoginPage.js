@@ -1,6 +1,13 @@
 // frontend/src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { Container, Box, Typography, TextField, Button, Avatar } from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Avatar
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/apiClient';
@@ -9,11 +16,13 @@ import { useNotification } from '../context/NotificationContext';
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);   // ⬅️ حالت لودینگ
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       // ارسال درخواست لاگین به SimpleJWT
       const response = await apiClient.post('/token/', {
@@ -22,14 +31,16 @@ function LoginPage() {
       });
 
       // ذخیره توکن‌ها در localStorage
-      localStorage.setItem('authToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
+      localStorage.setItem('access', response.data.access);
+      localStorage.setItem('refresh', response.data.refresh);
 
-      showNotification('ورود با موفقیت انجام شد!');
+      showNotification('ورود با موفقیت انجام شد! ✅');
       navigate('/dashboard');
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('❌ Login failed:', err.response?.data || err.message);
       showNotification('نام کاربری یا رمز عبور اشتباه است.', 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,8 +85,14 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            ورود
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={loading} // ⬅️ دکمه در حالت لودینگ غیر فعال میشه
+          >
+            {loading ? 'در حال ورود...' : 'ورود'}
           </Button>
         </Box>
       </Box>
