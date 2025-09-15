@@ -1,15 +1,14 @@
-// frontend/src/api/apiClient.js
 import axios from 'axios';
 
 const apiClient = axios.create({
-  // تغییر در این خط برای استفاده از متغیر جدید
+  // استفاده از نام متغیر جدید و صحیح
   baseURL: process.env.REACT_APP_DJANGO_API_URL, 
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// اینترسپتور برای اضافه کردن توکن به هر درخواست
+// ... بقیه کد بدون تغییر باقی می‌ماند ...
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');
