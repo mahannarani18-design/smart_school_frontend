@@ -15,42 +15,34 @@ import apiClient from '../api/apiClient';
 import { useNotification } from '../context/NotificationContext';
 
 function LoginPage() {
-  // 🔹 مقادیر فرم
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  // 🔹 وضعیت لودینگ
   const [loading, setLoading] = useState(false);
-  
-  const navigate = useNavigate();
-  const { showNotification } = useNotification(); // استفاده از Context نوتیفیکیشن
 
-  // 🔹 تابع ارسال فرم
+  const navigate = useNavigate();
+  const { showNotification } = useNotification();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // شروع لودینگ
-    try {
-      // ارسال درخواست لاگین به SimpleJWT
-      const response = await apiClient.post('/token/', {
-        username,
-        password,
-      });
+    setLoading(true);
 
-      // ذخیره توکن‌ها در localStorage
+    try {
+      // ارسال POST به Django JWT با apiClient که CSRF را مدیریت می‌کند
+      const response = await apiClient.post('/token/', { username, password });
+
+      // ذخیره توکن‌ها
       localStorage.setItem('access', response.data.access);
       localStorage.setItem('refresh', response.data.refresh);
 
-      // نمایش نوتیفیکیشن موفقیت
       showNotification('ورود با موفقیت انجام شد! ✅', 'success');
 
       // هدایت به داشبورد
       navigate('/dashboard');
     } catch (err) {
       console.error('❌ Login failed:', err.response?.data || err.message);
-      // نمایش نوتیفیکیشن خطا
       showNotification('نام کاربری یا رمز عبور اشتباه است.', 'error');
     } finally {
-      setLoading(false); // پایان لودینگ
+      setLoading(false);
     }
   };
 
@@ -64,17 +56,13 @@ function LoginPage() {
           alignItems: 'center',
         }}
       >
-        {/* آواتار با آیکون */}
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-
-        {/* عنوان صفحه */}
         <Typography component="h1" variant="h5">
           ورود به پنل مدیریت
         </Typography>
 
-        {/* فرم لاگین */}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -100,28 +88,15 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
-          {/* دکمه ورود */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={loading} // غیر فعال کردن هنگام لودینگ
+            disabled={loading}
           >
-            {loading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              'ورود'
-            )}
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'ورود'}
           </Button>
-        </Box>
-
-        {/* لینک فراموشی رمز عبور (اختیاری) */}
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="body2" color="text.secondary" align="center">
-            رمز عبور خود را فراموش کرده‌اید؟
-          </Typography>
         </Box>
       </Box>
     </Container>

@@ -1,22 +1,22 @@
-import axios from 'axios';
+// frontend/src/api/apiClient.js
+import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_DJANGO_API_URL || 'https://django-3o32v9.chbk.app/api/',
+  baseURL: "https://django-3o32v9.chbk.app/api",
+  withCredentials: true, // 🔹 مهم برای ارسال کوکی CSRF
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// اضافه کردن JWT به همه درخواست‌ها
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('access');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// قبل از هر POST، CSRF cookie را بگیر
+apiClient.interceptors.request.use(async (config) => {
+  if (config.method === "post") {
+    await axios.get("https://django-3o32v9.chbk.app/api/csrf/", {
+      withCredentials: true,
+    });
+  }
+  return config;
+});
 
 export default apiClient;
