@@ -1,23 +1,22 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  // استفاده از نام متغیر جدید و صحیح
-  baseURL: process.env.REACT_APP_DJANGO_API_URL, 
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: process.env.REACT_APP_API_URL, // 👈 حتماً در .env اینو تعریف کن
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// ... بقیه کد بدون تغییر باقی می‌ماند ...
+// 🔑 اینترسپتور برای اضافه کردن JWT به هر درخواست
 apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
+  (config) => {
+    const token = localStorage.getItem('access'); // 👈 تو LoginPage ذخیره کردی به اسم "access"
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
 export default apiClient;
