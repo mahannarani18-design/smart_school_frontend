@@ -7,6 +7,7 @@ const apiClient = axios.create({
   },
 });
 
+// اضافه کردن JWT به همه درخواست‌ها
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access');
