@@ -30,9 +30,7 @@ function StudentListPage() {
   const handleDelete = (id) => {
     if (window.confirm('آیا از حذف این دانش‌آموز مطمئن هستید؟ این عمل غیرقابل بازگشت است.')) {
       apiClient.delete(`/profiles/students/${id}/delete/`)
-        .then(() => {
-          fetchStudents();
-        })
+        .then(() => fetchStudents())
         .catch(error => console.error('Failed to delete student:', error));
     }
   };
@@ -43,13 +41,13 @@ function StudentListPage() {
       field: 'username', 
       headerName: 'نام کاربری', 
       width: 150, 
-      valueGetter: (value, row) => row.user.username 
+      valueGetter: (params) => params.row.user?.username || ''
     },
     { 
       field: 'full_name', 
       headerName: 'نام کامل', 
       width: 200, 
-      valueGetter: (value, row) => `${row.user.first_name || ''} ${row.user.last_name || ''}` 
+      valueGetter: (params) => `${params.row.user?.first_name || ''} ${params.row.user?.last_name || ''}`
     },
     { field: 'student_id', headerName: 'شماره دانش‌آموزی', width: 150 },
     { field: 'grade', headerName: 'پایه', width: 110 },
@@ -90,6 +88,7 @@ function StudentListPage() {
           initialState={{
             pagination: { paginationModel: { pageSize: 10 } },
           }}
+          getRowId={(row) => row.id}
         />
       </Box>
     </Container>
