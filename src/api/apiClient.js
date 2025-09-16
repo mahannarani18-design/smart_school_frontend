@@ -1,18 +1,17 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL, // 👈 حتماً در .env اینو تعریف کن
+  baseURL: process.env.REACT_APP_DJANGO_API_URL || 'https://django-3o32v9.chbk.app/api/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// 🔑 اینترسپتور برای اضافه کردن JWT به هر درخواست
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access'); // 👈 تو LoginPage ذخیره کردی به اسم "access"
+    const token = localStorage.getItem('access');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
